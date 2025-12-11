@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.log
+*.env
+.env
+.venv/
+venv/
+instance/
+*.sqlite3
+*.pyenv
+# IDEs
+.vscode/
+.idea/
+# Repl / local
+repl.it/
+pyproject.toml.lock

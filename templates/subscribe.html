@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Subscribe - Newsletter Generator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4 class="mb-0"><i class="bi bi-person-plus me-2"></i>Subscribe to Newsletter</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('subscribe') }}">
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">
+                            <i class="bi bi-person me-1"></i>Your Name
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="name" name="name" 
+                               required placeholder="John Doe" minlength="2">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">
+                            <i class="bi bi-envelope me-1"></i>Email Address
+                        </label>
+                        <input type="email" class="form-control form-control-lg" id="email" name="email" 
+                               required placeholder="john@example.com">
+                        <div class="form-text">We'll send your newsletter to this email.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="whatsapp" class="form-label fw-bold">
+                            <i class="bi bi-whatsapp me-1"></i>WhatsApp Number
+                        </label>
+                        <input type="tel" class="form-control form-control-lg" id="whatsapp" name="whatsapp" 
+                               required placeholder="+1234567890">
+                        <div class="form-text">Include country code (e.g., +1 for US, +91 for India).</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="topics" class="form-label fw-bold">
+                            <i class="bi bi-tag me-1"></i>Topics of Interest
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="topics" name="topics" 
+                               required placeholder="e.g., technology, business, health, science">
+                        <div class="form-text">
+                            Enter topics separated by commas. We'll find news matching your interests.
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3">
+                        <i class="bi bi-palette me-2"></i>PDF Style (Optional)
+                    </h5>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="primary_color" class="form-label">Primary Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" 
+                                       id="primary_color" name="primary_color" value="#1a73e8">
+                                <input type="text" class="form-control" id="primary_color_text" value="#1a73e8">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="secondary_color" class="form-label">Secondary Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" 
+                                       id="secondary_color" name="secondary_color" value="#4285f4">
+                                <input type="text" class="form-control" id="secondary_color_text" value="#4285f4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Font Style</label>
+                        <div class="row">
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_modern" value="modern" checked>
+                                <label class="btn btn-outline-primary w-100" for="style_modern">Modern</label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_classic" value="classic">
+                                <label class="btn btn-outline-primary w-100" for="style_classic">Classic</label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_clean" value="clean">
+                                <label class="btn btn-outline-primary w-100" for="style_clean">Clean</label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_elegant" value="elegant">
+                                <label class="btn btn-outline-primary w-100" for="style_elegant">Elegant</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-lg me-2"></i>Subscribe Now
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('primary_color').addEventListener('input', function() {
+        document.getElementById('primary_color_text').value = this.value;
+    });
+    document.getElementById('secondary_color').addEventListener('input', function() {
+        document.getElementById('secondary_color_text').value = this.value;
+    });
+</script>
+{% endblock %}

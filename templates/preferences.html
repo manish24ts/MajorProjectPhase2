@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Preferences - Newsletter Generator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4 class="mb-0"><i class="bi bi-gear me-2"></i>Newsletter Preferences</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('preferences') }}">
+                    <div class="mb-4">
+                        <label for="topics" class="form-label fw-bold">
+                            <i class="bi bi-tag me-1"></i>Topics of Interest
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="topics" name="topics" 
+                               value="{{ preferences.topics if preferences else '' }}"
+                               placeholder="e.g., technology, business, health, science">
+                        <div class="form-text">
+                            Enter topics separated by commas. We'll find news matching your interests.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="prompt" class="form-label fw-bold">
+                            <i class="bi bi-magic me-1"></i>AI Prompt (optional)
+                        </label>
+                        <textarea class="form-control" id="prompt" name="prompt" rows="3"
+                                  placeholder="e.g., make summaries funny, crisp, and simple.">{{ preferences.prompt if preferences else '' }}</textarea>
+                        <div class="form-text">
+                            This prompt is sent to the AI to influence tone and style.
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3">
+                        <i class="bi bi-palette me-2"></i>PDF Style
+                    </h5>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="primary_color" class="form-label">Primary Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" 
+                                       id="primary_color" name="primary_color"
+                                       value="{{ preferences.primary_color if preferences else '#1a73e8' }}">
+                                <input type="text" class="form-control" id="primary_color_text"
+                                       value="{{ preferences.primary_color if preferences else '#1a73e8' }}"
+                                       pattern="^#[0-9A-Fa-f]{6}$">
+                            </div>
+                            <div class="form-text">Used for titles and headers</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="secondary_color" class="form-label">Secondary Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" 
+                                       id="secondary_color" name="secondary_color"
+                                       value="{{ preferences.secondary_color if preferences else '#4285f4' }}">
+                                <input type="text" class="form-control" id="secondary_color_text"
+                                       value="{{ preferences.secondary_color if preferences else '#4285f4' }}"
+                                       pattern="^#[0-9A-Fa-f]{6}$">
+                            </div>
+                            <div class="form-text">Used for accents and links</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Font Style</label>
+                        <div class="row">
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_modern" value="modern"
+                                       {{ 'checked' if not preferences or preferences.font_style == 'modern' }}>
+                                <label class="btn btn-outline-primary w-100" for="style_modern">
+                                    <i class="bi bi-type me-1"></i>Modern
+                                </label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_classic" value="classic"
+                                       {{ 'checked' if preferences and preferences.font_style == 'classic' }}>
+                                <label class="btn btn-outline-primary w-100" for="style_classic">
+                                    <i class="bi bi-book me-1"></i>Classic
+                                </label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_clean" value="clean"
+                                       {{ 'checked' if preferences and preferences.font_style == 'clean' }}>
+                                <label class="btn btn-outline-primary w-100" for="style_clean">
+                                    <i class="bi bi-layout-text-window me-1"></i>Clean
+                                </label>
+                            </div>
+                            <div class="col-6 col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="font_style" id="style_elegant" value="elegant"
+                                       {{ 'checked' if preferences and preferences.font_style == 'elegant' }}>
+                                <label class="btn btn-outline-primary w-100" for="style_elegant">
+                                    <i class="bi bi-feather me-1"></i>Elegant
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h6 class="card-title">Preview</h6>
+                            <div id="preview-box" class="bg-white p-3 rounded border">
+                                <h5 id="preview-title" style="color: {{ preferences.primary_color if preferences else '#1a73e8' }}">
+                                    Sample Newsletter Title
+                                </h5>
+                                <p id="preview-subtitle" style="color: {{ preferences.secondary_color if preferences else '#4285f4' }}">
+                                    December 11, 2025 | Your personalized news
+                                </p>
+                                <p class="mb-0 text-muted small">
+                                    This is how your newsletter will look with the selected colors and style.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-lg me-2"></i>Save Preferences
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const primaryColor = document.getElementById('primary_color');
+    const primaryColorText = document.getElementById('primary_color_text');
+    const secondaryColor = document.getElementById('secondary_color');
+    const secondaryColorText = document.getElementById('secondary_color_text');
+    const previewTitle = document.getElementById('preview-title');
+    const previewSubtitle = document.getElementById('preview-subtitle');
+
+    primaryColor.addEventListener('input', function() {
+        primaryColorText.value = this.value;
+        previewTitle.style.color = this.value;
+    });
+
+    primaryColorText.addEventListener('input', function() {
+        if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+            primaryColor.value = this.value;
+            previewTitle.style.color = this.value;
+        }
+    });
+
+    secondaryColor.addEventListener('input', function() {
+        secondaryColorText.value = this.value;
+        previewSubtitle.style.color = this.value;
+    });
+
+    secondaryColorText.addEventListener('input', function() {
+        if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+            secondaryColor.value = this.value;
+            previewSubtitle.style.color = this.value;
+        }
+    });
+</script>
+{% endblock %}
